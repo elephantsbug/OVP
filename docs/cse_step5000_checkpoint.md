@@ -12,8 +12,8 @@
 | 文件大小 | 32,789,968,889 bytes，约 30.54 GiB |
 | checkpoint 格式 | `wan21_video_v1`，包含 `format`、完整 `dit` state dict、`step=5000` |
 | SHA-256 | `1180b147125895728b7426a7f547a5d97884746fcc6f2fb0d88dff6d61629c45` |
-| Hugging Face revision | 待上传完成并核验后自动填写 |
-| 上传状态及配套文件 | **上传中，尚未完成远端校验。** 完成后自动更新本页；本次 Hugging Face 仅上传 `step_005000.pt`，GitHub 仅更新本说明和 README 入口 |
+| Hugging Face revision | `fa714f0b560606dba82d76b099bfd0b0e88d246d` |
+| 上传状态及配套文件 | **已上传并校验**（2026-11-10T14:25:01.524368+00:00）：远端 SHA-256 与 32,789,968,889 bytes 均匹配本地文件；本次 Hugging Face 仅上传 `step_005000.pt`，GitHub 仅更新本说明和 README 入口 |
 
 原训练文件为 `runs/obj_video_cse_continue_5000_v1/checkpoints/weights/step_005000.pt`。该文件保存完整 Video DiT 参数，不是 LoRA。训练器保存此文件时传入 `optimizer=None`，因此它可用于推理或新一轮训练初始化，但不能单独恢复原训练的优化器、学习率调度器和随机数状态。
 
@@ -89,17 +89,17 @@ seed=1 在本次窗口集合上最好，可用于这批案例的展示；正式�
 
 ## 下载与恢复
 
-请在本页状态更新为“已上传并校验”后执行下载。私有 Hugging Face 仓库需要使用有权限的账户登录。不要把 token 写入命令示例或提交到代码仓库。
+私有 Hugging Face 仓库需要使用有权限的账户登录。不要把 token 写入命令示例或提交到代码仓库。
 
 ```bash
 hf auth login
 hf download elephantsbug/vpp2-obj-generation-cse-step5000 step_005000.pt \
-  --revision main \
+  --revision fa714f0b560606dba82d76b099bfd0b0e88d246d \
   --local-dir weights/cse-step5000
 sha256sum weights/cse-step5000/step_005000.pt
 ```
 
-将输出与本页 SHA-256 对照。上传完成后，下方自动更新流程会将命令中的 `main` 替换为已核验的固定 revision，避免后续仓库更新导致下载内容变化。
+将输出与本页 SHA-256 对照。命令固定到已核验的 revision，避免后续仓库更新导致下载内容变化。
 
 推理还需要与该模型兼容的代码、CSE 的 `[480, 640]` 配置、冻结的 Wan VAE/CLIP，以及对应 prompt 的缓存 embedding。对于新 prompt，还需要 T5 文本编码器和 tokenizer 生成 embedding。权重文件本身不包含这些组件，也不包含训练视频、测试视频或原始清单。
 
