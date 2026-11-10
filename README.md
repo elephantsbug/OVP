@@ -2,6 +2,8 @@
 
 First stage trained on vpp2 stage 2 checkpoint with robotwin_clean
 
+CSE single-view object-video model at step 5000: [checkpoint, evaluation and download notes](docs/cse_step5000_checkpoint.md).
+
 Backup and recovery instructions for the completed step 10000 model: [recovery guide](backups/step_010000_20261026/README.md). Historical `runs/` and `data/` links below refer to local experiment artifacts; their complete contents are not included in this code repository.
 
 ## Current training prompts: chronological object-video instructions, 128-token context
