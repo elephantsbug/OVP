@@ -1,6 +1,6 @@
 # CSE 5000 步 checkpoint：单视角物体视频预测
 
-[返回项目首页](../README.md) · [权重与版本](#权重与版本) · [评测结果](#3000-步与-5000-步的固定窗口评测) · [下载与恢复](#下载与恢复)
+[返回项目首页](../README.md) · [权重与版本](#权重与版本) · [评测结果](#3000-步与-5000-步的固定窗口评测) · [下载与恢复](#下载与恢复) · [语言指令 Demo](inference_demos.md)
 
 本文对应 CSE 单视角 640×480 模型。RoboTwin clean 双视角 448×224 的代码、配置和恢复步骤见 [clean 训练与推理](robotwin_clean_training.md)；两种输入尺寸和配置不能直接混用。
 
@@ -11,7 +11,7 @@
 | 项目 | 内容 |
 | --- | --- |
 | Hugging Face 模型仓库 | [elephantsbug/vpp2-obj-generation-cse-step5000](https://huggingface.co/elephantsbug/vpp2-obj-generation-cse-step5000)（公开，2026-11-11 核对） |
-| GitHub 代码仓库 | [elephantsbug/vpp2-obj-generation](https://github.com/elephantsbug/vpp2-obj-generation) |
+| GitHub 代码仓库 | [elephantsbug/OVP](https://github.com/elephantsbug/OVP) |
 | 权重文件 | `step_005000.pt` |
 | 文件大小 | 32,789,968,889 bytes，约 30.54 GiB |
 | checkpoint 格式 | `wan21_video_v1`，包含 `format`、完整 `dit` state dict、`step=5000` |

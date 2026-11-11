@@ -1,6 +1,6 @@
 # RoboTwin random：10000 步 checkpoint
 
-[返回项目首页](../README.md) · [clean 10k](../backups/step_010000_20261026/README.md) · [CSE 5k](cse_step5000_checkpoint.md)
+[返回项目首页](../README.md) · [clean 10k](../backups/step_010000_20261026/README.md) · [CSE 5k](cse_step5000_checkpoint.md) · [语言指令 Demo](inference_demos.md)
 
 这是 **RoboTwin random observer / ego / object split v2** 上完成 10000 次参数更新的模型，训练 run 为 `obj_video_random_train_lr2e6_v1`。它从 **RoboTwin clean 10k** 权重初始化，之后又作为 **CSE 5k** 的初始化来源。
 
