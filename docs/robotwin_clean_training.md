@@ -2,7 +2,7 @@
 
 [返回项目首页](../README.md) · [数据与 prompt](robotwin_clean_data.md) · [权重与恢复](../backups/step_010000_20261026/README.md)
 
-本文对应 **RoboTwin clean、observer / ego 双视角、448×224** 版本。训练已完成 10000 次参数更新；归档日志记录于 2026-10-23 保存最终权重和 trainer state。CSE 的单视角 640×480 模型请使用 [CSE 专页](cse_step5000_checkpoint.md)。
+本文对应 **RoboTwin clean、observer / ego 双视角、448×224** 版本。训练已完成 10000 次参数更新；归档日志记录于 2026-10-23 保存最终权重和 trainer state。CES 的单视角 640×480 模型请使用 [CES 专页](cse_step5000_checkpoint.md)。
 
 ## 实际训练配置
 

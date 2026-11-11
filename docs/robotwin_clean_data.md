@@ -2,7 +2,7 @@
 
 [返回项目首页](../README.md) · [训练与推理](robotwin_clean_training.md) · [恢复指南](../backups/step_010000_20261026/README.md)
 
-本文说明 clean 10k 模型使用的 **448×224 observer / ego 双视角** 数据。CSE 单视角的数据、划分和时间间隔见 [CSE checkpoint 文档](cse_step5000_checkpoint.md#输入输出与数据)。
+本文说明 clean 10k 模型使用的 **448×224 observer / ego 双视角** 数据。CES 单视角的数据、划分和时间间隔见 [CES checkpoint 文档](cse_step5000_checkpoint.md#输入输出与数据)。
 
 ## 数据约定
 

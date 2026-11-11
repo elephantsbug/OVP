@@ -3,9 +3,9 @@
 This directory records the completed RoboTwin clean object-video model and its
 recovery dependencies as a **2026-10-26 source and metadata snapshot**. This is
 the RoboTwin **clean** model; it is distinct from the random-data initializer
-used for the later CSE model.
+used for the later CES model.
 
-[Project overview](../../README.md) · [Completed clean training record](../../docs/robotwin_clean_training.md) · [CSE step 5000](../../docs/cse_step5000_checkpoint.md)
+[Project overview](../../README.md) · [Completed clean training record](../../docs/robotwin_clean_training.md) · [CES step 5000](../../docs/cse_step5000_checkpoint.md)
 
 ## Verified remote weights
 

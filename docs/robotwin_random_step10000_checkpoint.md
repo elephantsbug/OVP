@@ -1,8 +1,8 @@
 # RoboTwin random：10000 步 checkpoint
 
-[返回项目首页](../README.md) · [clean 10k](../backups/step_010000_20261026/README.md) · [CSE 5k](cse_step5000_checkpoint.md) · [语言指令 Demo](inference_demos.md)
+[返回项目首页](../README.md) · [clean 10k](../backups/step_010000_20261026/README.md) · [CES 5k](cse_step5000_checkpoint.md) · [语言指令 Demo](inference_demos.md)
 
-这是 **RoboTwin random observer / ego / object split v2** 上完成 10000 次参数更新的模型，训练 run 为 `obj_video_random_train_lr2e6_v1`。它从 **RoboTwin clean 10k** 权重初始化，之后又作为 **CSE 5k** 的初始化来源。
+这是 **RoboTwin random observer / ego / object split v2** 上完成 10000 次参数更新的模型，训练 run 为 `obj_video_random_train_lr2e6_v1`。它从 **RoboTwin clean 10k** 权重初始化，之后又作为 **CES 5k** 的初始化来源。
 
 random 和 clean 的文件都叫 `step_010000.pt`，但模型权重、数据划分和 SHA-256 不同，应分别下载到独立目录。
 
@@ -75,4 +75,4 @@ hf download elephantsbug/vpp2-object-video-random-step10000-20261102 \
 
 元数据记录源码基线为 `26f93d5`，同时明确 `source_git_has_tracked_changes=true`。因此仅检出这个 GitHub 提交并下载权重，不保证恢复了 random 运行时的全部代码修改和本地资源。当前 GitHub 的 clean 指南可帮助理解通用入口，但不能直接替代 random 的数据约定和运行配置。
 
-该备份**不包含优化器、调度器或 RNG 状态**。它可用于推理或后续训练的权重初始化，不能单独严格接续原训练。CSE 后训练使用此 random 权重，其配置和备份范围见 [CSE 5k](cse_step5000_checkpoint.md)。
+该备份**不包含优化器、调度器或 RNG 状态**。它可用于推理或后续训练的权重初始化，不能单独严格接续原训练。CES 后训练使用此 random 权重，其配置和备份范围见 [CES 5k](cse_step5000_checkpoint.md)。

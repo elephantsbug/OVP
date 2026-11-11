@@ -2,7 +2,7 @@
 
 本文保留 **2026-10-19 的早期设计与验证记录**。当时已接通数据、模型、训练和推理入口，正式训练尚未启动；文中的待验证项目和计划命令描述的是该阶段，不是项目当前状态。
 
-后续 RoboTwin clean 训练已完成 10000 步。实际运行配置与这里的初始计划不同：请参阅 [RoboTwin clean 训练记录](robotwin_clean_training.md) 和 [数据准备说明](robotwin_clean_data.md)。CSE 单视角模型另见 [5000 步 checkpoint 说明](cse_step5000_checkpoint.md)，不能直接套用本文的双视角配置。
+后续 RoboTwin clean 训练已完成 10000 步。实际运行配置与这里的初始计划不同：请参阅 [RoboTwin clean 训练记录](robotwin_clean_training.md) 和 [数据准备说明](robotwin_clean_data.md)。CES 单视角模型另见 [5000 步 checkpoint 说明](cse_step5000_checkpoint.md)，不能直接套用本文的双视角配置。
 
 [返回项目首页](../README.md)
 
