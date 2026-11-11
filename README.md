@@ -46,10 +46,17 @@ VPP2 Stage-2 → RoboTwin clean 10k → RoboTwin random 10k → CES 5k
 
 GitHub 当前代码和配置主要对应 clean 版本。random 的 HF 备份另含训练配置，但运行时有未包含在该 GitHub 提交中的代码修改；CES 的单视角代码与运行配置也未随权重完整发布。使用前请查看各自文档的恢复范围。
 
+## Quickstart
+
+从 [Quickstart：安装、下载与最小推理](docs/quickstart.md) 开始。指南以 RoboTwin clean 10k 为例，依次准备环境、下载并校验权重、检查输入窗口，最后生成 `future.mp4` 和 `trace.json`。
+
+运行需要本地 RGB 视频、去重索引和与指令匹配的文本 embedding；GitHub 清单快照未附带这些输入。只看效果可直接播放上方 Demo。
+
 ## 按用途阅读
 
 | 我想做什么 | 从哪里开始 |
 | --- | --- |
+| 安装环境、下载权重并跑一次 clean 推理 | [Quickstart](docs/quickstart.md) |
 | 查看语言指令跟随的视频、prompt 和对照条件 | [Demo 完整说明](docs/inference_demos.md) |
 | 下载 CES 5k，了解输入输出和 3k / 5k 评测 | [CES checkpoint 说明](docs/cse_step5000_checkpoint.md) |
 | 下载 RoboTwin random 10k，了解与 clean / CES 的关系 | [random checkpoint 说明](docs/robotwin_random_step10000_checkpoint.md) |
