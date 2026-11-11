@@ -1,12 +1,33 @@
 # Step 10000 model backup, 2026-10-26
 
 This directory records the completed RoboTwin clean object-video model and its
-recovery dependencies. Local preparation alone is not an off-server backup;
-remote upload status is recorded separately under `runs/checkpoint_backup_20261026/`.
+recovery dependencies as a **2026-10-26 source and metadata snapshot**. This is
+the RoboTwin **clean** model; it is distinct from the random-data initializer
+used for the later CSE model.
+
+[Project overview](../../README.md) · [Completed clean training record](../../docs/robotwin_clean_training.md) · [CSE step 5000](../../docs/cse_step5000_checkpoint.md)
+
+## Verified remote weights
+
+Checked against the Hugging Face Hub API on **2026-11-11**:
+
+| Item | Value |
+| --- | --- |
+| Model repository | [elephantsbug/vpp2-obj-generation-step10000](https://huggingface.co/elephantsbug/vpp2-obj-generation-step10000) |
+| Visibility at this check | Public |
+| Verified revision | `fea338d4a21fa7c296d7d3729be39b0720d8ea4d` |
+| Weight file | `step_010000.pt` |
+| File size | 32,789,968,889 bytes |
+| SHA-256 | `95b8cfe616e06e5456cc94f31fa0e0da880a020e1c4a81f86e3d0123af694858` |
+
+The remote LFS SHA-256 and byte count match [checkpoint.json](checkpoint.json).
+This check used remote metadata; it did not download the full weight file again.
+The preparation-time `private` and `pending` fields in that JSON are historical
+snapshot records, not the current repository status. They remain unchanged.
 
 ## Contents
 
-- The project Git repository contains the current adapter, model, dataset,
+- The project Git repository contains the clean-snapshot adapter, model, dataset,
   training/inference/evaluation scripts, tests, prompts and configurations.
 - `vpp2-source.tar.gz` contains all 226 tracked upstream files as they exist
   locally, including the modified trainer and upstream license notices. It does
@@ -48,9 +69,17 @@ consistently. Merely setting `VPP2_PROJECT_ROOT` does not rewrite all artifacts.
 
 ## Restore the weights
 
-Download the private Hugging Face artifact after its remote location has been
-recorded. Restore `step_010000.pt` and verify its SHA-256 against
-`checkpoint.json`. The original local location is:
+Download the weight at the verified revision and compare its SHA-256 with the
+value above and `checkpoint.json`:
+
+```bash
+hf download elephantsbug/vpp2-obj-generation-step10000 step_010000.pt \
+  --revision fea338d4a21fa7c296d7d3729be39b0720d8ea4d \
+  --local-dir weights/robotwin-clean-step10000
+sha256sum weights/robotwin-clean-step10000/step_010000.pt
+```
+
+The original local location is:
 
 ```
 runs/obj_video_train_v1/checkpoints/weights/step_010000.pt
@@ -69,7 +98,7 @@ The frozen components can be downloaded from the pinned public repository
 Their previously verified hashes are retained in
 `metadata/runs/baseline_setup_20261015/shared_weights_verified.json`.
 Public download availability is a dependency, not a claim that these frozen
-files have been uploaded to the new private backup.
+files are included in this model backup.
 
 For inference, `python -m vpp2_obj.infer --checkpoint /path/to/step_010000.pt ...`
 overrides the Stage-2 initializer. The original 65.6 GB Stage-2 weights are not

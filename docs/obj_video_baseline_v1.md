@@ -1,6 +1,10 @@
-# 第一版 RGB 条件 → 物体未来视频
+# 第一版 RGB 条件 → 物体未来视频（2026-10-19 快照）
 
-代码已接通数据、模型、训练和推理入口，供检查。正式训练尚未启动；下面的 GPU 训练命令尚未执行。
+本文保留 **2026-10-19 的早期设计与验证记录**。当时已接通数据、模型、训练和推理入口，正式训练尚未启动；文中的待验证项目和计划命令描述的是该阶段，不是项目当前状态。
+
+后续 RoboTwin clean 训练已完成 10000 步。实际运行配置与这里的初始计划不同：请参阅 [RoboTwin clean 训练记录](robotwin_clean_training.md) 和 [数据准备说明](robotwin_clean_data.md)。CSE 单视角模型另见 [5000 步 checkpoint 说明](cse_step5000_checkpoint.md)，不能直接套用本文的双视角配置。
+
+[返回项目首页](../README.md)
 
 ## 先看哪些文件
 
@@ -21,7 +25,7 @@
 
 现在 [distributed.py](../src/vpp2_obj/distributed.py) 在 `accelerator.prepare` 和恢复状态完成后，只为本次 engine 实例绑定 `training_loss → engine(...)`；模型新增 `forward → 原 training_loss`。这样运行完整 DeepSpeed 前向/反向生命周期，仍由 DeepSpeed 做累积平均，不再额外手工除 loss，前缀权重保持 1.0。
 
-旧 `obj_video_batch4_acc8_smoke_v1` 完成两次更新，证明该配置当时没有 OOM，但不作为正确梯度累积的验收结果。修复后的完整 GPU 路径需要重测；旧短测不续训到正式训练。
+旧 `obj_video_batch4_acc8_smoke_v1` 完成两次更新，证明该配置当时没有 OOM，但不作为正确梯度累积的验收结果。此快照记录的后续要求是重测修复后的完整 GPU 路径，不将旧短测续训到正式训练。
 
 累积 K 次时，吞吐应按 `optimizer steps/s × 每卡 batch × 卡数 × K` 计算。旧日志漏乘 K；原 profiler 的 optimizer-step 耗时已累计整个更新窗口，可以按正确全局 batch 重算。
 
@@ -54,15 +58,17 @@ condition：   [9 帧 RGB]，形状 [3, 9, 224, 448]
 
 推理继续沿用上游对全部 7 个 latent 的联合去噪，不新增前缀 clamp。完整解码 25 帧，只导出 `[9:25]` 共 16 帧。推理接口只接收 RGB 条件、缓存文本和 mask；CLI 不读取 obj 真值。`--fps` 仅决定输出播放速度，不改变采样索引或仿真时间。
 
-## 已完成的验证
+## 截至该快照已完成的验证
 
-- [33 项 CPU 测试全部通过](../runs/obj_video_baseline_v1_review/cpu_tests.log)，覆盖采样与补齐、两路视频对齐、缓存校验、任务均衡与多 worker 确定性、训练配置、推理不读真值，以及使用小型替身模型对比上游总 loss、梯度和采样行为。
-- [真实数据检查](../runs/obj_video_baseline_v1_review/verification.json)：`adjust_bottle/episode_0000016` 的首、中、末 3 个合法窗口，独立解码的 RGB/obj 像素差均为 0。[中间窗口预览](../runs/obj_video_baseline_v1_review/window_001/contact_sheet.png)。
-- [真实冻结 VAE 检查](../runs/obj_video_baseline_v1_vae_review/window_000/vae_check.json)：该集 `s=98`，完整 latent 为 `[1,16,7,28,56]`，条件 latent 为 `[1,16,3,28,56]`，前 3 个 latent 最大差为 0。[重建预览](../runs/obj_video_baseline_v1_vae_review/window_000/vae_reconstruction.png) 是真值的 VAE 重建，不是模型预测效果。
+以下 `runs/` 路径均相对于原服务器项目目录，相关产物未随 GitHub 仓库提供：
 
-[汇总报告](../runs/obj_video_baseline_v1_review/code_review_summary.json)记录检查结果与代码哈希。
+- 33 项 CPU 测试全部通过，覆盖采样与补齐、两路视频对齐、缓存校验、任务均衡与多 worker 确定性、训练配置、推理不读真值，以及使用小型替身模型对比上游总 loss、梯度和采样行为。日志：`runs/obj_video_baseline_v1_review/cpu_tests.log`。
+- 真实数据检查：`adjust_bottle/episode_0000016` 的首、中、末 3 个合法窗口，独立解码的 RGB/obj 像素差均为 0。记录：`runs/obj_video_baseline_v1_review/verification.json`；中间窗口预览：`runs/obj_video_baseline_v1_review/window_001/contact_sheet.png`。
+- 真实冻结 VAE 检查：该集 `s=98`，完整 latent 为 `[1,16,7,28,56]`，条件 latent 为 `[1,16,3,28,56]`，前 3 个 latent 最大差为 0。记录：`runs/obj_video_baseline_v1_vae_review/window_000/vae_check.json`；`runs/obj_video_baseline_v1_vae_review/window_000/vae_reconstruction.png` 是真值的 VAE 重建，不是模型预测效果。
 
-尚未验证完整 14B DiT 的 GPU 前向/反向、多卡训练、断点恢复或实际预测质量。CPU 替身测试和单窗口 VAE 验证不能代替这些检查。默认 micro-batch 的显存和吞吐仍需用短训练测量。
+本地汇总报告 `runs/obj_video_baseline_v1_review/code_review_summary.json` 记录检查结果与代码哈希。
+
+当时尚未验证完整 14B DiT 的 GPU 前向/反向、多卡训练、断点恢复或实际预测质量。CPU 替身测试和单窗口 VAE 验证不能代替这些检查；当时计划另用短训练测量默认 micro-batch 的显存和吞吐。后续实际训练记录见本文开头的导航。
 
 ## 复查命令
 
@@ -95,9 +101,9 @@ python -m vpp2_obj.infer \
 
 实际预测时指定训练得到的 DiT checkpoint，移除 `--dry-run`，选择空闲 GPU。输出为 `future.mp4` 与记录条件索引、prompt、mask、checkpoint 来源的 `trace.json`。
 
-## 后续训练命令（尚未执行）
+## 当时计划的训练命令
 
-启动脚本默认 GPU 4–7，4 个进程。正式配置为每卡 batch 1、梯度累积 208，global batch 832；学习率 `5e-6`、warmup 200、cosine、10000 optimizer steps。`max_steps` 控制训练长度，训练器会跨 epoch 继续训练。
+此处保留初始计划，不能用来描述后来完成的 10000 步运行。启动脚本默认 GPU 4–7，4 个进程。计划配置为每卡 batch 1、梯度累积 208，global batch 832；学习率 `5e-6`、warmup 200、cosine、10000 optimizer steps。`max_steps` 控制训练长度，训练器会跨 epoch 继续训练。
 
 先执行短训练配置，检查真实梯度、显存和吞吐；它只运行 2 个 optimizer steps，global batch 4，不保存大 checkpoint：
 
@@ -112,4 +118,4 @@ bash scripts/train_obj_video.sh \
 bash scripts/train_obj_video.sh
 ```
 
-需要重新运行时使用新的 `output_dir=...`，已有目录不会静默覆盖。恢复入口复用上游：`resume=...` 用于完整训练状态，`resume_ckpt=...` 用于权重初始化，两者互斥。真实恢复尚未经过 GPU 验证。
+需要重新运行时使用新的 `output_dir=...`，已有目录不会静默覆盖。恢复入口复用上游：`resume=...` 用于完整训练状态，`resume_ckpt=...` 用于权重初始化，两者互斥。此快照未记录真实 GPU 恢复验证，不代表后续运行的验证状态。

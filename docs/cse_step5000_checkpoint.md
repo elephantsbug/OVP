@@ -1,12 +1,16 @@
 # CSE 5000 步 checkpoint：单视角物体视频预测
 
-这份记录对应 CSE 仿真数据集训练至 **5000 次参数更新**的 Video DiT 权重。模型根据单个 observer 视角的全景 RGB 历史和英文动作计划，预测同一视角下、黑背景上的目标物体运动视频。它从 RoboTwin random 10000 步 checkpoint 初始化，再在 CSE 上后训练。
+[返回项目首页](../README.md) · [权重与版本](#权重与版本) · [评测结果](#3000-步与-5000-步的固定窗口评测) · [下载与恢复](#下载与恢复)
+
+本文对应 CSE 单视角 640×480 模型。RoboTwin clean 双视角 448×224 的代码、配置和恢复步骤见 [clean 训练与推理](robotwin_clean_training.md)；两种输入尺寸和配置不能直接混用。
+
+这份记录对应 CSE 仿真数据集训练至 **5000 次参数更新**的 Video DiT 权重。模型根据单个 observer 视角的全景 RGB 历史和英文动作计划，预测同一视角下、黑背景上的目标物体运动视频。它从 [RoboTwin random 10000 步 checkpoint](robotwin_random_step10000_checkpoint.md) 初始化，再在 CSE 上后训练。
 
 ## 权重与版本
 
 | 项目 | 内容 |
 | --- | --- |
-| Hugging Face 模型仓库 | [elephantsbug/vpp2-obj-generation-cse-step5000](https://huggingface.co/elephantsbug/vpp2-obj-generation-cse-step5000)（私有） |
+| Hugging Face 模型仓库 | [elephantsbug/vpp2-obj-generation-cse-step5000](https://huggingface.co/elephantsbug/vpp2-obj-generation-cse-step5000)（公开，2026-11-11 核对） |
 | GitHub 代码仓库 | [elephantsbug/vpp2-obj-generation](https://github.com/elephantsbug/vpp2-obj-generation) |
 | 权重文件 | `step_005000.pt` |
 | 文件大小 | 32,789,968,889 bytes，约 30.54 GiB |
@@ -89,10 +93,9 @@ seed=1 在本次窗口集合上最好，可用于这批案例的展示；正式�
 
 ## 下载与恢复
 
-私有 Hugging Face 仓库需要使用有权限的账户登录。不要把 token 写入命令示例或提交到代码仓库。
+2026-11-11 通过 Hugging Face API 核对，仓库已公开，文件大小和 SHA-256 仍与下述固定 revision 一致；可直接下载。
 
 ```bash
-hf auth login
 hf download elephantsbug/vpp2-obj-generation-cse-step5000 step_005000.pt \
   --revision fa714f0b560606dba82d76b099bfd0b0e88d246d \
   --local-dir weights/cse-step5000
@@ -105,7 +108,7 @@ sha256sum weights/cse-step5000/step_005000.pt
 
 冻结组件沿用项目现有 Wan2.1-I2V-14B-480P 依赖。已有备份记录的上游来源为 [`Haodong082399/VPP2`](https://huggingface.co/Haodong082399/VPP2)，revision `04824ddb3aae11f13db50984ed7d540c3b77dd9f`，其中 `checkpoints/Wan2.1-I2V-14B-480P/` 提供 VAE、CLIP、T5 等文件。上游可下载不等于它们已包含在此次备份中。
 
-本次没有将当前 CSE 源码、运行配置、环境文件或评测产物上传到远端；GitHub 更新范围是本说明及 README 入口。现有服务器上的 `src/vpp2_obj/`、`third_party/vpp2/` 和 CSE 配置仍是恢复依赖，不能将本次权重备份视为完整运行环境备份。CSE 版本放宽了原先固定双视角尺寸的配置校验，并让训练 probe 使用配置分辨率；仅恢复 GitHub 旧版 clean 代码和新权重不足以复现本次单视角运行。配置内原服务器的绝对路径也需要按新机器位置调整。
+2026-11-10 的 checkpoint 备份没有将 CSE 源码、运行配置、环境文件或评测产物上传到远端；GitHub 更新范围是本说明及 README 入口。现有服务器上的 `src/vpp2_obj/`、`third_party/vpp2/` 和 CSE 配置仍是恢复依赖，不能将本次权重备份视为完整运行环境备份。CSE 版本放宽了原先固定双视角尺寸的配置校验，并让训练 probe 使用配置分辨率；仅恢复 GitHub 旧版 clean 代码和新权重不足以复现本次单视角运行。配置内原服务器的绝对路径也需要按新机器位置调整。
 
 在保留当前 CSE 代码的环境中，复现上述评测时，必须显式指定兼容的 `--config`（分辨率 `[480, 640]`）、`--checkpoint` 和 `--steps 8`；不要沿用默认的双视角配置。`shift=3` 来自配置，命令行没有 `--shift` 参数。正式复现评测需分别使用 `--seed 0`、`--seed 1`、`--seed 2`。
 
